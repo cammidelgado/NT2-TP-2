@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio 2</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container-fluid mt-3" id="app">
+        <input type="text" class="form-control" v-model="criterioDeBusquedaNombre"
+            placeholder="Ingresar nombre...">
+            <br>
+            <input type="text" class="form-control" v-model="criterioDeBusquedaDni"
+            placeholder="Ingresar dni...">
+            <br>
+            <p v-show="mostrarAlerta()" class="alert alert-warning">
+                Ingresar al menos 3 caracteres
+            </p>
+            
+        <br>
+        <div class="card-deck m-0">
+            <div class="row">
+                <div class="col" v-for="persona in personasFiltradas" :key="persona.dni">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">{{getNombreCompleto(persona)}}</h5>
+                            <p class="card-text">dni {{persona.dni}}</p>
+                            <a href="#" class="card-link">{{persona.correo}}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        const { createApp } = Vue
+        var app = createApp({
+            data() {
+                return {
+                    criterioDeBusquedaNombre: '',
+                    criterioDeBusquedaDni: '',
+                    //Aquí, en este array es donde tienen que agregar su información
+                    personas: [
+                        {
+                            nombre: "Daniel",
+                            apellido: "Sanchez",
+                            correo: "danielsanchez68@hotmail.com",
+                            dni: "20442873"
+                        },
+                        {
+                            nombre: "Juan",
+                            apellido: "Perez",
+                            correo: "j@p.gmail.com",
+                            dni: "12345678"
+                        },
+                        {
+                            nombre: "Ana",
+                            apellido: "Suarez",
+                            correo: "a@s.gmail.com",
+                            dni: "87654321"
+                        },
+                        {
+                            nombre: "...",
+                            apellido: "...",
+                            correo: "...",
+                            dni: "..."
+                        },
+                    ]
+                }
+            },
+            computed: {
+                personasFiltradas() {
+                    return this.personas.filter((persona) => {
+                        let registroNombre = `${persona.nombre} ${persona.apellido}`.toLowerCase()
+                        let registroDni = `${persona.dni}`
+                        return registroNombre.includes(this.criterioDeBusquedaNombre.toLowerCase()) && registroDni.includes(this.criterioDeBusquedaDni)
+                    });
+                }
+            },
+            methods: {
+                getNombreCompleto(persona) {
+                    return `${persona.nombre} ${persona.apellido}`
+                },
+                mostrarAlerta(){
+                    // Ambos filtros tienen que tener al menos 3 caracteres
+                    return this.criterioDeBusquedaNombre.length < 3 || this.criterioDeBusquedaDni.length < 3
+                    // Un solo filtro tiene que tener al menos 3 caracteres
+                    // return this.criterioDeBusquedaNombre.length < 3 && this.criterioDeBusquedaDni.length < 3
+                }
+            }
+        }).mount('#app')
+    </script>    
+</body>
+</html>
+
