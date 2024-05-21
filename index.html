@@ -16,7 +16,7 @@
             <input type="text" class="form-control" v-model="criterioDeBusquedaDni"
             placeholder="Ingresar dni...">
             <br>
-            <p v-show="mostrarAlerta()" class="alert alert-warning">
+            <p v-if="this.criterioDeBusquedaNombre.length < 3 || this.criterioDeBusquedaDni.length < 3" class="alert alert-warning">
                 Ingresar al menos 3 caracteres
             </p>
             
@@ -86,12 +86,6 @@
                 getNombreCompleto(persona) {
                     return `${persona.nombre} ${persona.apellido}`
                 },
-                mostrarAlerta(){
-                    // Ambos filtros tienen que tener al menos 3 caracteres
-                    return this.criterioDeBusquedaNombre.length < 3 || this.criterioDeBusquedaDni.length < 3
-                    // Un solo filtro tiene que tener al menos 3 caracteres
-                    // return this.criterioDeBusquedaNombre.length < 3 && this.criterioDeBusquedaDni.length < 3
-                }
             }
         }).mount('#app')
     </script>    
